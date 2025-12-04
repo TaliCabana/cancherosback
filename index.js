@@ -13,7 +13,6 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
-// --- RUTAS ---
 app.use('/api/products', productRoutes);
 
 const PORT = process.env.PORT || 4000;
