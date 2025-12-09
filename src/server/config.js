@@ -16,12 +16,11 @@ export default class Server{
         this.app.use(express.json());
         this.app.use(morgan('dev'));
         const __dirname = dirname(fileURLToPath(import.meta.url));
-        console.log(__dirname)
-        this.app.use(express.static(__dirname + '/public'));
+         this.app.use(express.static(__dirname + '/../../public'));
     }
 
     listen(){
-        this.app.listen(this.port, ()=>{ console.info(`Servidor ejecutándose en el puerto ${this.port}`)});
+        this.app.listen(this.port, ()=> console.info(`Servidor ejecutándose en: http://localhost:${this.port}`));
     }
 }
 
