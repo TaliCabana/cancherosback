@@ -1,10 +1,10 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-const productSchema = new mongoose.Schema({
+const productSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String },
-  price: { type: Number, required: true },
-  stock: { type: Number, default: 0 },
+  price: { type: Number, required: true, min: 0  },
+  stock: { type: Number, default: 0, min: 0  },
   imageUrl: { type: String },
   
   category: { 
@@ -14,7 +14,9 @@ const productSchema = new mongoose.Schema({
     default: 'General'
   },
   sizes: { 
-    type: String, 
+    type: [String],
+    required: true,
+    enum: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'Único'],
     default: 'Único'
   },
   
@@ -22,5 +24,5 @@ const productSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
-
-export default mongoose.model('Product', productSchema);
+const Product = mongoose.models('Product', productSchema)
+export default Product
