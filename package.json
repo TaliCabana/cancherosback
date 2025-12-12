@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Backend para la aplicación Cancheros",
   "main": "index.js",
-  "type": "module", 
+  "type": "module",
   "scripts": {
     "start": "node index",
     "dev": "node --env-file .env --watch index"
