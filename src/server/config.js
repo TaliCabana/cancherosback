@@ -4,7 +4,7 @@ import morgan from 'morgan';
 import {dirname} from 'path';   
 import {fileURLToPath} from 'url';
 import dbConnection from './dbConfig.js';
-import productRoutes from '../routes/product.route.js';
+import productRoutes from '../routes/productos.routes.js';
 export default class Server{
     constructor(){
         this.app = express();
