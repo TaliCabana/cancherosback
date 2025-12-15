@@ -17,6 +17,7 @@ export default class Server{
         this.middlewares();
         this.routes();
     }
+    
     async conectarDB() {
         await dbConnection();
     }
