@@ -6,14 +6,20 @@ export const getReservas = async (req, res) => {
     res.json(reservas)
 }
 
-const CANCHAS_VALIDAS = ['Cancha 1', 'Cancha 2', 'Cancha 3']
+const CANCHAS_VALIDAS = ['Cancha 1', 'Cancha 2']
 
 export const createReserva = async (req, res) => {
     try {
-        const { usuario, cancha, fecha, horario } = req.body
+        const { usuario, telefono, cancha, fecha, horario } = req.body
 
-        if (!usuario || !cancha || !fecha || !horario) {
+        if (!usuario || !telefono || !cancha || !fecha || !horario) {
             return res.status(400).json({ message: 'Datos incompletos' })
+        }
+
+        const telefonoRegex = /^\d{8,15}$/
+
+        if (!telefonoRegex.test(telefono.trim())) {
+            return res.status(400).json({ message: 'El teléfono debe contener solo números y tener entre 8 y 15 dígitos' })
         }
 
         if (!CANCHAS_VALIDAS.includes(cancha)) {
@@ -45,6 +51,7 @@ export const createReserva = async (req, res) => {
 
         const reserva = new Reserva({
             usuario: usuario.trim(),
+            telefono: telefono.trim(),
             cancha,
             fecha,
             horario
@@ -61,11 +68,10 @@ export const createReserva = async (req, res) => {
 }
 
 
-
 export const updateReserva = async (req, res) => {
     try {
         const { id } = req.params
-        const { usuario, cancha, fecha, horario } = req.body
+        const { usuario, telefono, cancha, fecha, horario } = req.body
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ message: 'ID inválido' })
@@ -75,6 +81,7 @@ export const updateReserva = async (req, res) => {
         if (!reservaActual) {
             return res.status(404).json({ message: 'Reserva no encontrada' })
         }
+
 
         if (cancha && !CANCHAS_VALIDAS.includes(cancha)) {
             return res.status(400).json({ message: 'Cancha inválida' })
@@ -117,14 +124,33 @@ export const updateReserva = async (req, res) => {
             return res.status(409).json({ message: 'La cancha ya está reservada en ese horario' })
         }
 
+        if (telefono) {
+            const telefonoRegex = /^\d{8,15}$/
+            if (!telefonoRegex.test(telefono.trim())) {
+                return res.status(400).json({ message: 'El teléfono debe contener solo números y tener entre 8 y 15 dígitos' })
+            }
+        }
+        
+        let estadoValido = null;
+        if (req.body.estado !== undefined) {
+            if (['pendiente', 'confirmado'].includes(req.body.estado)) {
+                estadoValido = req.body.estado;
+            } else {
+                return res.status(400).json({ message: 'Estado inválido. Use "pendiente" o "confirmado".' });
+            }
+        }
+
+        const updateFields = {}
+        if (usuario) updateFields.usuario = usuario.trim()
+        if (telefono) updateFields.telefono = telefono.trim()
+        if (cancha) updateFields.cancha = cancha
+        if (fecha) updateFields.fecha = fecha
+        if (horario) updateFields.horario = horario
+        if (estadoValido !== null) updateFields.estado = estadoValido;
+
         const reservaActualizada = await Reserva.findByIdAndUpdate(
             id,
-            {
-                ...(usuario && { usuario: usuario.trim() }),
-                ...(cancha && { cancha }),
-                ...(fecha && { fecha }),
-                ...(horario && { horario })
-            },
+            updateFields,
             { new: true }
         )
 
