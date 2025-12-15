@@ -1,4 +1,5 @@
 import Producto from "../models/product.model.js";
+import { v2 as cloudinary } from 'cloudinary';
 
 export const obtenerProducto = async (req, res) => {
   try {
@@ -11,15 +12,21 @@ export const obtenerProducto = async (req, res) => {
 
 export const crearProducto = async (req, res) => {
   try {
+    let tallesArray = ["Único"];
+    if (req.body.talles) {
+      tallesArray = req.body.talles
+        .split(",")
+        .map((s) => s.trim().toUpperCase());
+    }
+     console.log("Archivo recibido:", req.file); 
     const nuevoProducto = new Producto({
       nombre: req.body.nombre,
       descripcion: req.body.descripcion,
       precio: req.body.precio,
-      talles: req.body.talles,
+      talles: tallesArray,
       categoria: req.body.categoria,
-      imagen: req.body.imagen || null,
+      imagen: req.file ? req.file.path : null,
     });
-
     await nuevoProducto.save();
     res.status(201).json(nuevoProducto);
   } catch (error) {
@@ -29,9 +36,26 @@ export const crearProducto = async (req, res) => {
 
 export const editarProducto = async (req, res) => {
   try {
+    let tallesArray;
+    if (req.body.talles) {
+      tallesArray = req.body.talles
+        .split(",")
+        .map((s) => s.trim().toUpperCase());
+    }
+
+   const datosActualizar = {
+      nombre: req.body.nombre,
+      descripcion: req.body.descripcion,
+      precio: req.body.precio,
+      categoria: req.body.categoria,
+      ...(tallesArray && { talles: tallesArray }),
+    };
+    if (req.file) {
+      datosActualizar.imagen = req.file.path;
+    }
     const productoActualizado = await Producto.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      datosActualizar,
       { new: true }
     );
     res.json(productoActualizado);
@@ -42,6 +66,18 @@ export const editarProducto = async (req, res) => {
 
 export const borrarProducto = async (req, res) => {
   try {
+    const producto = await Producto.findById(req.params.id);
+
+    if (!producto) {
+      return res.status(404).json({ message: "Producto no encontrado" });
+    }
+
+     if (producto.imagen) {
+      const urlParts = producto.imagen.split("/");
+      const fileWithExtension = urlParts.pop();
+      const publicId = `cancheros/${fileWithExtension.split(".")[0]}`;
+      await cloudinary.uploader.destroy(publicId);
+    }
     await Producto.findByIdAndDelete(req.params.id);
     res.json({ message: "Producto eliminado" });
   } catch (error) {
