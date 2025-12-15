@@ -16,7 +16,7 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     talles: {
-      type: String,
+      type: [String],
       required: true,
     },
     imagen: {
