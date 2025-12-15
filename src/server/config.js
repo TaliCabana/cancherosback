@@ -8,6 +8,9 @@ import productRoutes from '../routes/product.route.js';
 import reservasRoutes from '../routes/reservas.route.js'
 export default class Server {
     constructor() {
+import productRoutes from '../routes/productos.routes.js';
+export default class Server{
+    constructor(){
         this.app = express();
         this.port = process.env.PORT || 3001;
         this.productsPath = '/api/products';
