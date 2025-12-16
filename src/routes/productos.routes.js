@@ -8,6 +8,9 @@ import {
   editarProducto,
   borrarProducto,
 } from "../controllers/product.controller.js";
+import { check } from 'express-validator'; 
+import { validarResultado } from '../helpers/validarCampos.js'; 
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -26,8 +29,27 @@ const upload = multer({ storage: storage });
 const router = Router();
 
 router.get("/", obtenerProducto);
-router.post("/", upload.single("imagen"), crearProducto);
-router.put("/:id", upload.single("imagen"), editarProducto);
+router.post('/', 
+    upload.single('imagen'), 
+    [
+        check('nombre', 'El nombre es obligatorio').notEmpty(),
+        check('precio', 'El precio es obligatorio y debe ser numérico').notEmpty().isNumeric(),
+        check('categoria', 'La categoría es obligatoria').notEmpty(),
+        validarResultado 
+    ],
+    crearProducto 
+);
+router.put('/:id', 
+    upload.single('imagen'), 
+    [
+        check('nombre', 'El nombre es obligatorio').notEmpty(),
+        check('precio', 'El precio es obligatorio').notEmpty().isNumeric(),
+        check('categoria', 'La categoría es obligatoria').notEmpty(),
+        validarResultado
+    ],
+    editarProducto 
+);
+
 router.delete("/:id", borrarProducto);
 
 export default router;

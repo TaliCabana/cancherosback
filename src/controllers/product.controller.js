@@ -9,7 +9,7 @@ export const obtenerProducto = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
+const DEFAULT_IMAGE = "https://res.cloudinary.com/dhihpafup/image/upload/v1765849683/default-product_jkxepr.jpg"; 
 export const crearProducto = async (req, res) => {
   try {
     let tallesArray = ["Único"];
@@ -25,7 +25,7 @@ export const crearProducto = async (req, res) => {
       precio: req.body.precio,
       talles: tallesArray,
       categoria: req.body.categoria,
-      imagen: req.file ? req.file.path : null,
+      imagen: req.file ? req.file.path : DEFAULT_IMAGE,
     });
     await nuevoProducto.save();
     res.status(201).json(nuevoProducto);
@@ -72,7 +72,7 @@ export const borrarProducto = async (req, res) => {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
 
-     if (producto.imagen) {
+     if (producto.imagen && producto.imagen !== DEFAULT_IMAGE) {
       const urlParts = producto.imagen.split("/");
       const fileWithExtension = urlParts.pop();
       const publicId = `cancheros/${fileWithExtension.split(".")[0]}`;
