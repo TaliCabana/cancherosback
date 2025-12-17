@@ -10,7 +10,7 @@ import {
 } from "../controllers/product.controller.js";
 import { check } from 'express-validator'; 
 import { validarResultado } from '../helpers/validarCampos.js'; 
-
+import { validarJWT } from '../helpers/validarJWT.js'; 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -30,6 +30,7 @@ const router = Router();
 
 router.get("/", obtenerProducto);
 router.post('/', 
+     validarJWT, 
     upload.single('imagen'), 
     [
         check('nombre', 'El nombre es obligatorio').notEmpty(),
@@ -40,6 +41,7 @@ router.post('/',
     crearProducto 
 );
 router.put('/:id', 
+   validarJWT,
     upload.single('imagen'), 
     [
         check('nombre', 'El nombre es obligatorio').notEmpty(),
@@ -50,6 +52,6 @@ router.put('/:id',
     editarProducto 
 );
 
-router.delete("/:id", borrarProducto);
+router.delete("/:id",validarJWT,  borrarProducto);
 
 export default router;

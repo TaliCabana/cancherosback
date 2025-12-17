@@ -8,6 +8,8 @@ import {
 } from '../controllers/usuario.controller.js';
 import { check } from 'express-validator';
 import { validarResultado } from '../helpers/validarCampos.js';
+import { validarJWT } from '../helpers/validarJWT.js';
+
 const router = Router();
 
 router.post('/registro', 
@@ -23,9 +25,9 @@ router.post('/registro',
 );
 router.post('/login', loginUsuario);
 
-router.get('/', listarUsuarios);
-router.delete('/:id', borrarUsuario);
-router.put('/:id', 
+router.get('/', validarJWT, listarUsuarios);
+router.delete('/:id', validarJWT, borrarUsuario);
+router.put('/:id', validarJWT,
     [
         check('nombre', 'El nombre es obligatorio').notEmpty(),
         check('email', 'El email debe ser válido').isEmail(),
