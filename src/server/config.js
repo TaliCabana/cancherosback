@@ -26,13 +26,14 @@ export default class Server{
         await crearAdminPorDefecto(); 
     }
     middlewares() {
-          this.app.use(cors({
+        this.app.use(cors({
             origin: '*', 
-            methods: ['GET', 'POST', 'PUT', 'DELETE'],
-            allowedHeaders: ['Content-Type', 'Authorization'] 
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+            allowedHeaders: ['Content-Type', 'Authorization', 'x-token'],
+            credentials: true
         }));
-        this.app.use(express.json());
         this.app.use(morgan('dev'));
+        this.app.use(express.json());
         const __dirname = dirname(fileURLToPath(import.meta.url));
         this.app.use(express.static(__dirname + '/../../public'));
     }
