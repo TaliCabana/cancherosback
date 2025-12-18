@@ -11,7 +11,7 @@ import { validarResultado } from '../helpers/validarCampos.js';
 import { validarJWT } from '../helpers/validarJWT.js';
 
 const router = Router();
-
+//
 router.post('/registro', 
     [
         check('nombre', 'El nombre es obligatorio').notEmpty(),
