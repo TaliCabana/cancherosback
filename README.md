@@ -213,10 +213,10 @@ Importar la colección en Postman y configurar las variables del entorno antes d
 ## 🔗 Enlaces Útiles  
 
 ![GitHub](https://img.shields.io/badge/GitHub-Repo-00BFA6?logo=github&logoColor=white&style=for-the-badge)  
-→ [Repositorio del Backend]()
+→ [Repositorio del Backend](https://github.com/TaliCabana/cancherosback)
 
 ![Render](https://img.shields.io/badge/Render-Deploy-00BFA6?logo=render&logoColor=white&style=for-the-badge)  
-→ [API desplegada]()
+→ [API desplegada](https://cancherosback-hskh.vercel.app/)
 
 ---
 
