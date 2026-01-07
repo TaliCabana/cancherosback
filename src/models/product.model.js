@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     precio: {
-      type: String, // revisar con Nacho por el "$"
+      type: String, 
       required: true,
     },
     talles: {
@@ -20,7 +20,7 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     imagen: {
-      type: String, // URL o path
+      type: String, 
     },
     categoria: {
       type: String,
