@@ -22,7 +22,6 @@ export const crearAdminPorDefecto = async () => {
     nuevoAdmin.password = bcrypt.hashSync(nuevoAdmin.password, salt);
 
     await nuevoAdmin.save();
-    console.log(" Administrador creado automáticamente: admin@cancheros.com / Admin123!");
 
   } catch (error) {
     console.error("Error al inicializar datos:", error);

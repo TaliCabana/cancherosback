@@ -255,7 +255,7 @@ Este proyecto fue desarrollado por un talentoso equipo:
 
 - [GUERRERO, Maximiliano](https://github.com/maxiguerrero767)
 
-- [JIMÉNEZ, Germán](https://github.com/Pablo-German-Jimenez)
+- [JIMÉNEZ, Pablo Germán](https://github.com/Pablo-German-Jimenez)
 
 - [ALBORNOZ, Joaquín](https://github.com/JQNPro10)
 
