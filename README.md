@@ -215,8 +215,8 @@ Importar la colección en Postman y configurar las variables del entorno antes d
 ![GitHub](https://img.shields.io/badge/GitHub-Repo-00BFA6?logo=github&logoColor=white&style=for-the-badge)  
 → [Repositorio del Backend](https://github.com/TaliCabana/cancherosback)
 
-![Render](https://img.shields.io/badge/Render-Deploy-00BFA6?logo=render&logoColor=white&style=for-the-badge)  
-→ [API desplegada](https://vercel.com/talis-projects-1f5e33a0/cancherosback)
+![Vercel](https://img.shields.io/badge/Vercel-Deploy-00BFA6?logo=render&logoColor=white&style=for-the-badge)  
+→ [API desplegada](https://cancherosback-hskh.vercel.app/)
 
 ---
 
