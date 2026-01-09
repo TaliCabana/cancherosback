@@ -7,6 +7,7 @@ import {
   crearProducto,
   editarProducto,
   borrarProducto,
+  obtenerProductoPorId
 } from "../controllers/product.controller.js";
 import { check } from 'express-validator'; 
 import { validarResultado } from '../helpers/validarCampos.js'; 
@@ -28,6 +29,7 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage: storage });
 const router = Router();
 
+router.get('/:id', obtenerProductoPorId)
 router.get("/", obtenerProducto);
 router.post('/', 
      validarJWT, 

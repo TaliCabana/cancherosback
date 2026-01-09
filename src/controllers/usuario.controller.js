@@ -11,8 +11,6 @@ export const crearUsuario = async (req, res) => {
       return res.status(400).json({ mensaje: "El correo ya está registrado" });
     }
 
-    /* usuarioExistente = new Usuario(req.body); */
-
     const salt = bcrypt.genSaltSync(10);
     const passwordHash = bcrypt.hashSync(password, salt);
 
