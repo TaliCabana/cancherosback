@@ -159,7 +159,6 @@ export const updateReserva = async (req, res) => {
         if (error.code === 11000) {
             return res.status(409).json({ message: 'La cancha ya está reservada en ese horario' })
         }
-        console.log(error)
         res.status(500).json({ message: 'Error al actualizar reserva' })
     }
 }

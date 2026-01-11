@@ -7,7 +7,7 @@ export const crearAdminPorDefecto = async () => {
     const adminExistente = await Usuario.findOne({ email: emailAdmin });
 
     if (adminExistente) {
-      console.log("✅ El Administrador ya está listo.");
+      console.info("✅ El Administrador ya está listo.");
       return;
     }
 
