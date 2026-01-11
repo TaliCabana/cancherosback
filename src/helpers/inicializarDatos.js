@@ -15,7 +15,8 @@ export const crearAdminPorDefecto = async () => {
       nombre: "Super Administrador",
       email: emailAdmin,
       password: "Admin123!", 
-      rol: "admin"
+      rol: "admin",
+      telefono: "3811234567" 
     });
 
     const salt = bcrypt.genSaltSync(10);
