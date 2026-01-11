@@ -1,12 +1,52 @@
 import Reserva from '../models/reserva.js'
 import mongoose from 'mongoose'
 
-export const getReservas = async (req, res) => {
-    const reservas = await Reserva.find()
-    res.json(reservas)
+const CANCHAS_VALIDAS = ['Cancha 1', 'Cancha 2']
+const HORARIO_REGEX = /^([01]\d|2[0-3]):[0-5]\d$/
+const TELEFONO_REGEX = /^\d{8,15}$/
+
+
+const validarFecha = (fecha) => {
+    const fechaReserva = new Date(fecha)
+    if (isNaN(fechaReserva.getTime())) return { valido: false, msj: 'Fecha inválida' }
+    
+    const hoy = new Date()
+    hoy.setHours(0, 0, 0, 0)
+    fechaReserva.setHours(0, 0, 0, 0)
+
+    if (fechaReserva < hoy) return { valido: false, msj: 'No se permiten fechas pasadas' }
+    return { valido: true }
 }
 
-const CANCHAS_VALIDAS = ['Cancha 1', 'Cancha 2']
+const validarDatosComunes = (datos) => {
+    const { telefono, cancha, horario, fecha } = datos
+    
+    if (telefono && !TELEFONO_REGEX.test(telefono.trim())) 
+        return 'El teléfono debe contener solo números y tener entre 8 y 15 dígitos'
+    
+    if (cancha && !CANCHAS_VALIDAS.includes(cancha)) 
+        return 'Cancha inválida'
+    
+    if (horario && !HORARIO_REGEX.test(horario)) 
+        return 'Horario inválido'
+    
+    if (fecha) {
+        const checkFecha = validarFecha(fecha)
+        if (!checkFecha.valido) return checkFecha.msj
+    }
+    return null
+}
+
+
+
+export const getReservas = async (req, res) => {
+    try {
+        const reservas = await Reserva.find()
+        res.json(reservas)
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener las reservas' })
+    }
+}
 
 export const createReserva = async (req, res) => {
     try {
@@ -16,38 +56,11 @@ export const createReserva = async (req, res) => {
             return res.status(400).json({ message: 'Datos incompletos' })
         }
 
-        const telefonoRegex = /^\d{8,15}$/
-
-        if (!telefonoRegex.test(telefono.trim())) {
-            return res.status(400).json({ message: 'El teléfono debe contener solo números y tener entre 8 y 15 dígitos' })
-        }
-
-        if (!CANCHAS_VALIDAS.includes(cancha)) {
-            return res.status(400).json({ message: 'Cancha inválida' })
-        }
-
-        const horarioRegex = /^([01]\d|2[0-3]):[0-5]\d$/
-        if (!horarioRegex.test(horario)) {
-            return res.status(400).json({ message: 'Horario inválido' })
-        }
-
-        const fechaReserva = new Date(fecha)
-        if (isNaN(fechaReserva.getTime())) {
-            return res.status(400).json({ message: 'Fecha inválida' })
-        }
-
-        const hoy = new Date()
-        hoy.setHours(0, 0, 0, 0)
-        fechaReserva.setHours(0, 0, 0, 0)
-
-        if (fechaReserva < hoy) {
-            return res.status(400).json({ message: 'No se permiten fechas pasadas' })
-        }
+        const errorValidacion = validarDatosComunes({ telefono, cancha, horario, fecha })
+        if (errorValidacion) return res.status(400).json({ message: errorValidacion })
 
         const existeReserva = await Reserva.findOne({ cancha, fecha, horario })
-        if (existeReserva) {
-            return res.status(409).json({ message: 'La cancha ya está reservada en ese horario' })
-        }
+        if (existeReserva) return res.status(409).json({ message: 'La cancha ya está reservada en ese horario' })
 
         const reserva = new Reserva({
             usuario: usuario.trim(),
@@ -60,55 +73,23 @@ export const createReserva = async (req, res) => {
         await reserva.save()
         res.status(201).json(reserva)
     } catch (error) {
-        if (error.code === 11000) {
-            return res.status(409).json({ message: 'La cancha ya está reservada en ese horario' })
-        }
         res.status(500).json({ message: 'Error al crear la reserva' })
     }
 }
 
-
 export const updateReserva = async (req, res) => {
     try {
         const { id } = req.params
-        const { usuario, telefono, cancha, fecha, horario } = req.body
+        if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ message: 'ID inválido' })
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: 'ID inválido' })
-        }
+        const errorValidacion = validarDatosComunes(req.body)
+        if (errorValidacion) return res.status(400).json({ message: errorValidacion })
 
         const reservaActual = await Reserva.findById(id)
-        if (!reservaActual) {
-            return res.status(404).json({ message: 'Reserva no encontrada' })
-        }
+        if (!reservaActual) return res.status(404).json({ message: 'Reserva no encontrada' })
 
 
-        if (cancha && !CANCHAS_VALIDAS.includes(cancha)) {
-            return res.status(400).json({ message: 'Cancha inválida' })
-        }
-
-        if (horario) {
-            const horarioRegex = /^([01]\d|2[0-3]):[0-5]\d$/
-            if (!horarioRegex.test(horario)) {
-                return res.status(400).json({ message: 'Horario inválido' })
-            }
-        }
-
-        if (fecha) {
-            const fechaReserva = new Date(fecha)
-            if (isNaN(fechaReserva.getTime())) {
-                return res.status(400).json({ message: 'Fecha inválida' })
-            }
-
-            const hoy = new Date()
-            hoy.setHours(0, 0, 0, 0)
-            fechaReserva.setHours(0, 0, 0, 0)
-
-            if (fechaReserva < hoy) {
-                return res.status(400).json({ message: 'No se permiten fechas pasadas' })
-            }
-        }
-
+        const { cancha, fecha, horario, usuario, telefono, estado } = req.body
         const nuevaCancha = cancha || reservaActual.cancha
         const nuevaFecha = fecha || reservaActual.fecha
         const nuevoHorario = horario || reservaActual.horario
@@ -120,45 +101,20 @@ export const updateReserva = async (req, res) => {
             horario: nuevoHorario
         })
 
-        if (conflicto) {
-            return res.status(409).json({ message: 'La cancha ya está reservada en ese horario' })
+        if (conflicto) return res.status(409).json({ message: 'La cancha ya está reservada en ese horario' })
+
+        const updateFields = {
+            ...(usuario && { usuario: usuario.trim() }),
+            ...(telefono && { telefono: telefono.trim() }),
+            ...(cancha && { cancha }),
+            ...(fecha && { fecha }),
+            ...(horario && { horario }),
+            ...(estado && ['pendiente', 'confirmado'].includes(estado) && { estado })
         }
 
-        if (telefono) {
-            const telefonoRegex = /^\d{8,15}$/
-            if (!telefonoRegex.test(telefono.trim())) {
-                return res.status(400).json({ message: 'El teléfono debe contener solo números y tener entre 8 y 15 dígitos' })
-            }
-        }
-        
-        let estadoValido = null;
-        if (req.body.estado !== undefined) {
-            if (['pendiente', 'confirmado'].includes(req.body.estado)) {
-                estadoValido = req.body.estado;
-            } else {
-                return res.status(400).json({ message: 'Estado inválido. Use "pendiente" o "confirmado".' });
-            }
-        }
-
-        const updateFields = {}
-        if (usuario) updateFields.usuario = usuario.trim()
-        if (telefono) updateFields.telefono = telefono.trim()
-        if (cancha) updateFields.cancha = cancha
-        if (fecha) updateFields.fecha = fecha
-        if (horario) updateFields.horario = horario
-        if (estadoValido !== null) updateFields.estado = estadoValido;
-
-        const reservaActualizada = await Reserva.findByIdAndUpdate(
-            id,
-            updateFields,
-            { new: true }
-        )
-
+        const reservaActualizada = await Reserva.findByIdAndUpdate(id, updateFields, { new: true })
         res.status(200).json(reservaActualizada)
     } catch (error) {
-        if (error.code === 11000) {
-            return res.status(409).json({ message: 'La cancha ya está reservada en ese horario' })
-        }
         res.status(500).json({ message: 'Error al actualizar reserva' })
     }
 }
@@ -166,17 +122,11 @@ export const updateReserva = async (req, res) => {
 export const deleteReserva = async (req, res) => {
     try {
         const { id } = req.params
+        if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ message: 'ID inválido' })
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: 'ID inválido' })
-        }
+        const reserva = await Reserva.findByIdAndDelete(id)
+        if (!reserva) return res.status(404).json({ message: 'Reserva no encontrada' })
 
-        const reserva = await Reserva.findById(id)
-        if (!reserva) {
-            return res.status(404).json({ message: 'Reserva no encontrada' })
-        }
-
-        await Reserva.findByIdAndDelete(id)
         res.status(200).json({ message: 'Reserva eliminada' })
     } catch (error) {
         res.status(500).json({ message: 'Error al eliminar la reserva' })
