@@ -1,29 +1,34 @@
 import Usuario from '../models/usuario.model.js';
 import bcrypt from 'bcryptjs';
 
-export const crearAdminPorDefecto = async () => {
-  try {
-    const emailAdmin = "admin@cancheros.com";
-    const adminExistente = await Usuario.findOne({ email: emailAdmin });
 
-    if (adminExistente) {
-      console.info("✅ El Administrador ya está listo.");
-      return;
-    }
-
-    const nuevoAdmin = new Usuario({
-      nombre: "Super Administrador",
-      email: emailAdmin,
-      password: "Admin123!", 
-      rol: "admin"
-    });
-
+const encriptarPassword = (password) => {
     const salt = bcrypt.genSaltSync(10);
-    nuevoAdmin.password = bcrypt.hashSync(nuevoAdmin.password, salt);
+    return bcrypt.hashSync(password, salt);
+};
 
-    await nuevoAdmin.save();
+export const crearAdminPorDefecto = async () => {
+    const ADMIN_EMAIL = "admin@cancheros.com";
 
-  } catch (error) {
-    console.error("Error al inicializar datos:", error);
-  }
+    try {
+        const adminExistente = await Usuario.findOne({ email: ADMIN_EMAIL });
+
+        if (adminExistente) {
+       
+            return console.info("✅ Admin listo.");
+        }
+
+        const nuevoAdmin = new Usuario({
+            nombre: "Super Administrador",
+            email: ADMIN_EMAIL,
+            password: encriptarPassword("Admin123!"), 
+            rol: "admin"
+        });
+
+        await nuevoAdmin.save();
+        console.info("🚀 Super Administrador creado con éxito.");
+
+    } catch (error) {
+        console.error("❌ Error al inicializar Admin:", error);
+    }
 };
