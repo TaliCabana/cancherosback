@@ -30,26 +30,40 @@ Funciona como el núcleo lógico del proyecto, centralizando reglas de negocio y
 - Conexión a base de datos en la nube.
 
 ---
+## 📅 Reservas y Canchas (`/api/reservas` y `/api/canchas`)
 
-# 📬 Documentación de la API – Postman (Cancheros Backend)
+### 🏟️ Canchas
+| Método | Endpoint | Descripción | 🔐 |
+| :--- | :--- | :--- | :--- |
+| **GET** | `/api/canchas` | Listar todas las canchas | No |
+| **POST** | `/api/canchas` | Crear una nueva cancha | Sí |
+| **PUT** | `/api/canchas/:id` | Editar datos de una cancha | Sí |
+| **DELETE** | `/api/canchas/:id` | Eliminar una cancha | Sí |
 
-La API de **Cancheros** está documentada para ser utilizada con **Postman**, usando variables de entorno para permitir que cada desarrollador configure su propio puerto sin modificar los endpoints.
+### 🗓️ Reservas
+| Método | Endpoint | Descripción | 🔐 |
+| :--- | :--- | :--- | :--- |
+| **GET** | `/api/reservas` | Obtener todas las reservas | No |
+| **POST** | `/api/reservas` | Crear una nueva reserva | No |
+| **PUT** | `/api/reservas/:id` | Editar/Confirmar reserva | No |
+| **DELETE** | `/api/reservas/:id` | Cancelar/Eliminar reserva | No |
 
 ---
 
-## 🌍 Variables de entorno (Postman)
+## 📬 Documentación de la API (Postman)
 
-Crear un entorno en Postman con las siguientes variables:
+La API de **Cancheros** está documentada para su uso inmediato. Puedes acceder a la documentación detallada y ejemplos de respuesta en el siguiente enlace:
 
-base_url = http://localhost:{{port}}  
-port = 3001  
-token =  
+👉 **[Link Público a la Documentación en Postman](AQUÍ_VA_TU_LINK)** *(Nota: Si aún no tienes el link público, ve a Postman > Tu Colección > Share > Publish Documentation)*
 
-El token JWT se obtiene al iniciar sesión y debe guardarse en la variable `token`.
+### Configuración de Entorno
+Para testear localmente, configura las siguientes variables en tu entorno de Postman:
+- `base_url`: `http://localhost:{{port}}`
+- `port`: `3001`
+- `token`: *(Se autocompleta al hacer login)*
 
-En endpoints protegidos se debe enviar el header:
-
-Authorization: Bearer {{token}}
+Los endpoints protegidos requieren el header:  
+`Authorization: Bearer {{token}}`
 
 ---
 
