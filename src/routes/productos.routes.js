@@ -1,59 +1,46 @@
 import { Router } from "express";
-import multer from "multer";
-import { v2 as cloudinary } from "cloudinary";
-import { CloudinaryStorage } from "multer-storage-cloudinary";
-import {  
+import { check } from 'express-validator'; 
+import { 
   obtenerProducto,
   crearProducto,
   editarProducto,
   borrarProducto,
   obtenerProductoPorId
 } from "../controllers/product.controller.js";
-import { check } from 'express-validator'; 
+
 import { validarResultado } from '../helpers/validarCampos.js'; 
 import { validarJWT } from '../helpers/validarJWT.js'; 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+import upload from '../helpers/uploadImages.js'; 
 
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: "cancheros",
-    allowed_formats: ["jpg", "png", "jpeg", "webp"],
-  },
-});
-
-const upload = multer({ storage: storage });
 const router = Router();
 
-router.get('/:id', obtenerProductoPorId)
+
+const validacionesProducto = [
+    check('nombre', 'El nombre es obligatorio').notEmpty(),
+    check('precio', 'El precio debe ser numérico').isNumeric(),
+    check('categoria', 'La categoría es obligatoria').notEmpty(),
+    validarResultado 
+];
+
+
 router.get("/", obtenerProducto);
+router.get('/:id', obtenerProductoPorId);
+
+
 router.post('/', 
-     validarJWT, 
+    validarJWT, 
     upload.single('imagen'), 
-    [
-        check('nombre', 'El nombre es obligatorio').notEmpty(),
-        check('precio', 'El precio es obligatorio y debe ser numérico').notEmpty().isNumeric(),
-        check('categoria', 'La categoría es obligatoria').notEmpty(),
-        validarResultado 
-    ],
+    validacionesProducto,
     crearProducto 
 );
+
 router.put('/:id', 
-   validarJWT,
+    validarJWT,
     upload.single('imagen'), 
-    [
-        check('nombre', 'El nombre es obligatorio').notEmpty(),
-        check('precio', 'El precio es obligatorio').notEmpty().isNumeric(),
-        check('categoria', 'La categoría es obligatoria').notEmpty(),
-        validarResultado
-    ],
+    validacionesProducto,
     editarProducto 
 );
 
-router.delete("/:id",validarJWT,  borrarProducto);
+router.delete("/:id", validarJWT, borrarProducto);
 
 export default router;

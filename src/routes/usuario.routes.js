@@ -13,7 +13,7 @@ import { validarJWT } from "../helpers/validarJWT.js";
 
 const router = Router();
 
-// --- Validaciones Reutilizables (DRY) ---
+
 const validacionesRegistro = [
     check("nombre", "El nombre es obligatorio").notEmpty(),
     check("email", "El email es obligatorio y debe ser válido").isEmail(),
@@ -29,7 +29,7 @@ const validacionesUpdate = [
     validarResultado
 ];
 
-// --- Rutas de Autenticación (Públicas) ---
+
 router.post("/registro", validacionesRegistro, crearUsuario);
 
 router.post("/login", [
@@ -38,7 +38,7 @@ router.post("/login", [
     validarResultado
 ], loginUsuario);
 
-// --- Rutas de Administración (Protegidas) ---
+
 router.get("/", validarJWT, listarUsuarios);
 
 router.put("/:id", [validarJWT, ...validacionesUpdate], editarUsuario);
