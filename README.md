@@ -32,8 +32,8 @@ Funciona como el núcleo lógico del proyecto, centralizando reglas de negocio y
 ---
 ## 📅 Reservas y Turnos (/api/reservas)Las canchas disponibles actualmente son: 'Cancha 1' y 'Cancha 2'
 ----------------------------------------------------------------------------------------
-- Método | Endpoint             |Descripción                             |🔐 JWT    |
-- GET    | /api/reservasObtener  | Obtener historial de todos los turnos  |Sí        |
+- Método | Endpoint              |Descripción                             |🔐 JWT    |
+- GET    | /api/reservas         | Obtener historial de todos los turnos  |Sí        |
 - POST   | /api/reservas         | Reservar un turno (Cancha 1 o 2)       |Sí        |
 - PUT    | /api/reservas/:id     |Modificar fecha, hora o estado del turno|Sí        | 
 - DELETE | /api/reservas/:id     |Cancelar y eliminar una reserva         |Sí        |
@@ -42,9 +42,7 @@ Funciona como el núcleo lógico del proyecto, centralizando reglas de negocio y
 
 ## 📬 Documentación de la API (Postman)
 
-La API de **Cancheros** está documentada para su uso inmediato. Puedes acceder a la documentación detallada y ejemplos de respuesta en el siguiente enlace:
-
-👉 **[Link Público a la Documentación en Postman](AQUÍ_VA_TU_LINK)** *(Nota: Si aún no tienes el link público, ve a Postman > Tu Colección > Share > Publish Documentation)*
+👉 **[Link Público a la Documentación en Postman](https://documenter.getpostman.com/view/48943028/2sBXVkAUL1)**
 
 ### Configuración de Entorno
 Para testear localmente, configura las siguientes variables en tu entorno de Postman:
