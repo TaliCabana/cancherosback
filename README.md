@@ -30,23 +30,13 @@ Funciona como el núcleo lógico del proyecto, centralizando reglas de negocio y
 - Conexión a base de datos en la nube.
 
 ---
-## 📅 Reservas y Canchas (`/api/reservas` y `/api/canchas`)
-
-### 🏟️ Canchas
-| Método | Endpoint | Descripción | 🔐 |
-| :--- | :--- | :--- | :--- |
-| **GET** | `/api/canchas` | Listar todas las canchas | No |
-| **POST** | `/api/canchas` | Crear una nueva cancha | Sí |
-| **PUT** | `/api/canchas/:id` | Editar datos de una cancha | Sí |
-| **DELETE** | `/api/canchas/:id` | Eliminar una cancha | Sí |
-
-### 🗓️ Reservas
-| Método | Endpoint | Descripción | 🔐 |
-| :--- | :--- | :--- | :--- |
-| **GET** | `/api/reservas` | Obtener todas las reservas | No |
-| **POST** | `/api/reservas` | Crear una nueva reserva | No |
-| **PUT** | `/api/reservas/:id` | Editar/Confirmar reserva | No |
-| **DELETE** | `/api/reservas/:id` | Cancelar/Eliminar reserva | No |
+## 📅 Reservas y Turnos (/api/reservas)Las canchas disponibles actualmente son: 'Cancha 1' y 'Cancha 2'
+----------------------------------------------------------------------------------------
+- Método | Endpoint             |Descripción                             |🔐 JWT    |
+- GET    | /api/reservasObtener  | Obtener historial de todos los turnos  |Sí        |
+- POST   | /api/reservas         | Reservar un turno (Cancha 1 o 2)       |Sí        |
+- PUT    | /api/reservas/:id     |Modificar fecha, hora o estado del turno|Sí        | 
+- DELETE | /api/reservas/:id     |Cancelar y eliminar una reserva         |Sí        |
 
 ---
 
@@ -125,15 +115,15 @@ DELETE {{base_url}}/api/usuarios/:id
 
 ---
 
-## 🛒 Productos (`/api/products`)
+## 🛒 Productos (`/api/productos`)
 
 ### Obtener productos
-GET {{base_url}}/api/products
+GET {{base_url}}/api/productos
 
 ---
 
 ### Crear producto 🔐
-POST {{base_url}}/api/products
+POST {{base_url}}/api/productos
 
 Body (form-data):
 nombre: Camiseta Boca  
@@ -146,7 +136,7 @@ imagen: archivo
 ---
 
 ### Editar producto 🔐
-PUT {{base_url}}/api/products/:id
+PUT {{base_url}}/api/productos/:id
 
 Body (form-data):
 nombre: Camiseta Boca Actualizada  
@@ -158,7 +148,7 @@ imagen: archivo (opcional)
 ---
 
 ### Eliminar producto 🔐
-DELETE {{base_url}}/api/products/:id
+DELETE {{base_url}}/api/productos/:id
 
 ---
 
