@@ -29,8 +29,6 @@ const reservaSchema = new mongoose.Schema({
         enum: ['pendiente', 'confirmado'],
         default: 'pendiente'
     }
-}, { timestamps: true });
-
-reservaSchema.index({ cancha: 1, fecha: 1, horario: 1 }, { unique: true });
+}, { timestamps: true }); // 
 
 export default mongoose.model('Reserva', reservaSchema);
