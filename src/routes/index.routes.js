@@ -1,7 +1,7 @@
 import { Router } from "express";
 import productosRoutes from "./productos.routes.js";
 import usuariosRoutes from "./usuario.routes.js"; 
-import reservasRoutes from "./reservas.route.js"; 
+import reservasRoutes from "./reservas.routes.js"; 
 const router = Router();
 
 

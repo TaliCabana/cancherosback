@@ -4,7 +4,7 @@ import morgan from 'morgan';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import dbConnection from './dbConfig.js';
-import reservasRoutes from '../routes/reservas.route.js'
+import reservasRoutes from '../routes/reservas.routes.js'
 import productRoutes from '../routes/productos.routes.js'; 
 import usuarioRoutes from '../routes/usuario.routes.js';
 import { crearAdminPorDefecto } from '../helpers/inicializarDatos.js'; 
