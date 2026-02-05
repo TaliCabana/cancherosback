@@ -30,7 +30,8 @@ Funciona como el núcleo lógico del proyecto, centralizando reglas de negocio y
 - Conexión a base de datos en la nube.
 
 ---
-## 📅 Reservas y Turnos (/api/reservas) Las canchas disponibles actualmente son: 'Cancha 1' y 'Cancha 2'
+##  Reservas y Turnos (/api/reservas) Las canchas disponibles actualmente son: 'Cancha 1' y 'Cancha 2'
+Base URL (Producción): https://cancherosback-hskh.vercel.app
 ----------------------------------------------------------------------------------------
 - Método | Endpoint              | Descripción                             |🔐 JWT    |
 - GET    | /api/reservas         | Obtener historial de todos los turnos   |Sí        |
