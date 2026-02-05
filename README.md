@@ -47,7 +47,7 @@ Funciona como el núcleo lógico del proyecto, centralizando reglas de negocio y
 ### Configuración de Entorno
 Para testear localmente, configura las siguientes variables en tu entorno de Postman:
 - `base_url`: `http://localhost:{{port}}`
-- `port`: `3001`
+- `port`: `3000`
 - `token`: *(Se autocompleta al hacer login)*
 
 Los endpoints protegidos requieren el header:  
