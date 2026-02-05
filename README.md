@@ -30,13 +30,13 @@ Funciona como el núcleo lógico del proyecto, centralizando reglas de negocio y
 - Conexión a base de datos en la nube.
 
 ---
-## 📅 Reservas y Turnos (/api/reservas)Las canchas disponibles actualmente son: 'Cancha 1' y 'Cancha 2'
+## 📅 Reservas y Turnos (/api/reservas) Las canchas disponibles actualmente son: 'Cancha 1' y 'Cancha 2'
 ----------------------------------------------------------------------------------------
-- Método | Endpoint              |Descripción                             |🔐 JWT    |
-- GET    | /api/reservas         | Obtener historial de todos los turnos  |Sí        |
-- POST   | /api/reservas         | Reservar un turno (Cancha 1 o 2)       |Sí        |
-- PUT    | /api/reservas/:id     |Modificar fecha, hora o estado del turno|Sí        | 
-- DELETE | /api/reservas/:id     |Cancelar y eliminar una reserva         |Sí        |
+- Método | Endpoint              | Descripción                             |🔐 JWT    |
+- GET    | /api/reservas         | Obtener historial de todos los turnos   |Sí        |
+- POST   | /api/reservas         | Reservar un turno (Cancha 1 o 2)        |Sí        |
+- PUT    | /api/reservas/:id     | Modificar fecha, hora o estado del turno|Sí        | 
+- DELETE | /api/reservas/:id     | Cancelar y eliminar una reserva         |Sí        |
 
 ---
 
