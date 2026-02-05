@@ -20,7 +20,7 @@ const reservaSchema = new mongoose.Schema({
         required: true
     },
     horario: {
-        type: String,
+        type: Date,
         required: true,
         match: [/^([01]\d|2[0-3]):[0-5]\d$/, 'Horario inválido']
     },
