@@ -5,7 +5,7 @@ import reservasRoutes from "./reservas.routes.js";
 const router = Router();
 
 
-router.use('/productos', productosRoutes);
+router.use('/products', productosRoutes);
 router.use('/usuarios', usuariosRoutes);
 router.use('/reservas', reservasRoutes);
 
