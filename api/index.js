@@ -4,7 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 
 import router from '../src/routes/index.routes.js';
-import dbConnection from '../src/config/dbConfig.js';
+import dbConnection from '../src/server/dbConfig.js';
 
 const app = express();
 
