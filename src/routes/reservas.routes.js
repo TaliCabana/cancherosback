@@ -14,7 +14,7 @@ const router = Router();
 
 
 const validacionesReserva = [
-    check('usuario', 'El nombre de usuario es obligatorio').notEmpty(),
+/*     check('usuario', 'El nombre de usuario es obligatorio').notEmpty(), */
     check('telefono', 'El teléfono es obligatorio').notEmpty(),
     check('cancha', 'La cancha es obligatoria').notEmpty(),
     check('fecha', 'La fecha es obligatoria').notEmpty(),
