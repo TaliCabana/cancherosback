@@ -37,8 +37,10 @@ const validarDatosComunes = (datos) => {
 };
 
 export const getReservas = async (req, res) => {
+  const reservas = await Reserva.find()
+    .populate("usuario", "nombre email")
+    .populate("cancha");
   try {
-    const reservas = await Reserva.find().populate("usuario", "nombre");
     res.json(reservas);
   } catch (error) {
     res.status(500).json({ message: "Error al obtener las reservas" });
@@ -63,7 +65,7 @@ export const createReserva = async (req, res) => {
     if (errorValidacion)
       return res.status(400).json({ message: errorValidacion });
 
-/*     if (!mongoose.Types.ObjectId.isValid(usuario)) {
+    /*     if (!mongoose.Types.ObjectId.isValid(usuario)) {
       return res
         .status(400)
         .json({ message: "ID de usuario no válido para la relación" });
@@ -112,7 +114,8 @@ export const updateReserva = async (req, res) => {
     if (!reservaActual)
       return res.status(404).json({ message: "Reserva no encontrada" });
 
-    const { cancha, fecha, horario, nombreCliente, telefono, estado } = req.body;
+    const { cancha, fecha, horario, nombreCliente, telefono, estado } =
+      req.body;
     const nuevaCancha = cancha || reservaActual.cancha;
     const nuevaFecha = fecha || reservaActual.fecha;
     const nuevoHorario = horario || reservaActual.horario;
